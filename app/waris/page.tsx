@@ -1,7 +1,7 @@
 import { WarisCalculator } from "@/components/waris-calculator"
 
 export const metadata = {
-  title: "Kalkulator Warisan — ZAWAR",
+  title: "Kalkulator Warisan — ZAWIR",
   description: "Hitung pembagian warisan sesuai dengan ilmu Faraidh syariah Islam",
 }
 

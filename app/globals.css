@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* <CHANGE> Updated color scheme to ZAWAR Islamic theme */
+  /* <CHANGE> Updated color scheme to ZAWIR Islamic theme */
   --background: #f2f7f4;
   --foreground: #1a1a1a;
   --card: #ffffff;

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 
 export const metadata = {
-  title: "ZAWAR — Kalkulator Zakat & Warisan Syariah",
+  title: "ZAWIR — Kalkulator Zakat & Warisan Syariah",
   description: "Hitung zakat dan pembagian warisan sesuai syariah Islam dengan akurat dan mudah",
 }
 
@@ -21,7 +21,7 @@ export default function Home() {
 
             {/* Main Title */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-balance text-foreground mb-6 leading-tight">
-              <span className="text-primary">ZAWAR</span> — Kalkulator Zakat & Warisan Syariah
+              <span className="text-primary">ZAWIR</span> — Kalkulator Zakat & Warisan Syariah
             </h1>
 
             {/* Subtitle */}
@@ -65,7 +65,7 @@ export default function Home() {
       <section className="py-16 sm:py-20 px-4 bg-background">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">Mengapa Memilih ZAWAR?</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">Mengapa Memilih ZAWIR?</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Dirancang khusus untuk membantu Anda memahami dan menghitung kewajiban syariah dengan presisi tinggi.
             </p>
@@ -159,9 +159,9 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
-              <h2 className="text-3xl font-bold text-foreground mb-4">Tentang ZAWAR</h2>
+              <h2 className="text-3xl font-bold text-foreground mb-4">Tentang ZAWIR</h2>
               <p className="text-muted-foreground mb-4 leading-relaxed">
-                ZAWAR adalah aplikasi web yang dirancang untuk membantu umat Muslim dalam menghitung dan memahami
+                ZAWIR adalah aplikasi web yang dirancang untuk membantu umat Muslim dalam menghitung dan memahami
                 kewajiban zakat serta pembagian warisan sesuai dengan hukum syariah Islam.
               </p>
               <p className="text-muted-foreground leading-relaxed">

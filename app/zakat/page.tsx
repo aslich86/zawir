@@ -1,7 +1,7 @@
 import { ZakatCalculator } from "@/components/zakat-calculator"
 
 export const metadata = {
-  title: "Kalkulator Zakat — ZAWAR",
+  title: "Kalkulator Zakat — ZAWIR",
   description: "Hitung zakat penghasilan, zakat maal, zakat emas/perak, dan zakat fitrah",
 }
 

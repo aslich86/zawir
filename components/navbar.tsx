@@ -16,7 +16,7 @@ export default function Navbar() {
             <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center shadow-sm">
               <span className="text-primary-foreground font-bold text-lg">Z</span>
             </div>
-            <span className="font-bold text-xl text-primary hidden sm:inline">ZAWAR</span>
+            <span className="font-bold text-xl text-primary hidden sm:inline">ZAWIR</span>
           </Link>
 
           {/* Navigation Links */}
