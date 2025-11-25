@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     initialScale: 1,
     maximumScale: 1,
   },
-    generator: 'v0.app'
+    generator: 'Zawir'
 }
 
 const _geist = Geist({ subsets: ["latin"] })
