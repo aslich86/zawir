@@ -1,29 +1,33 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import type { ZakatResultData } from "../zakat-calculator"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import type { ZakatResultData } from "../zakat-calculator";
 
 interface ZakatFitrahProps {
-  onResult: (result: ZakatResultData) => void
+  onResult: (result: ZakatResultData) => void;
+  formatNumber: (value: string | number) => string;
+  parseNumber: (value: string) => number;
 }
 
-export function ZakatFitrah({ onResult }: ZakatFitrahProps) {
-  const [familyMembers, setFamilyMembers] = useState("1")
-  const [pricePerPerson, setPricePerPerson] = useState("50000")
+export function ZakatFitrah({
+  onResult,
+  formatNumber,
+  parseNumber,
+}: ZakatFitrahProps) {
+  const [familyMembers, setFamilyMembers] = useState("1");
+  const [pricePerPerson, setPricePerPerson] = useState(formatNumber("50000"));
 
   const handleCalculate = () => {
-    if (!familyMembers || !pricePerPerson) return
+    if (!familyMembers || !pricePerPerson) return;
 
-    const members = Number.parseInt(familyMembers)
-    const priceAmount = Number.parseFloat(pricePerPerson)
+    const members = parseNumber(familyMembers);
+    const priceAmount = parseNumber(pricePerPerson);
 
-    // Zakat fitrah adalah 1 sha (3.2 liter) untuk setiap orang
-    // Biasanya dinyatakan dalam nilai uang
-    const totalAmount = members * priceAmount
+    const totalAmount = members * priceAmount;
 
     onResult({
       type: "fitrah",
@@ -34,8 +38,8 @@ export function ZakatFitrah({ onResult }: ZakatFitrahProps) {
         familyMembers: members,
         pricePerPerson: priceAmount,
       },
-    })
-  }
+    });
+  };
 
   return (
     <Card className="p-6 bg-card border-border space-y-4">
@@ -46,13 +50,16 @@ export function ZakatFitrah({ onResult }: ZakatFitrahProps) {
         <p className="text-sm text-muted-foreground mb-2">
           Jumlah orang yang wajib mengeluarkan zakat fitrah (termasuk Anda)
         </p>
+
         <Input
           id="familyMembers"
-          type="number"
+          inputMode="numeric"
           placeholder="Contoh: 4"
           value={familyMembers}
-          onChange={(e) => setFamilyMembers(e.target.value)}
-          min="1"
+          onChange={(e) => {
+            const cleaned = parseNumber(e.target.value);
+            setFamilyMembers(cleaned ? formatNumber(cleaned) : "");
+          }}
         />
       </div>
 
@@ -61,15 +68,18 @@ export function ZakatFitrah({ onResult }: ZakatFitrahProps) {
           Nilai Zakat Fitrah Per Orang (Rp)
         </Label>
         <p className="text-sm text-muted-foreground mb-2">
-          Nilai 1 sha (3.2 liter) beras, kurma, atau sejenis makanan pokok
+          Nilai 1 sha (3.2 liter) beras / makanan pokok dalam rupiah
         </p>
+
         <Input
           id="pricePerPerson"
-          type="number"
-          placeholder="Contoh: 50000"
+          inputMode="numeric"
+          placeholder="Contoh: 50.000"
           value={pricePerPerson}
-          onChange={(e) => setPricePerPerson(e.target.value)}
-          min="0"
+          onChange={(e) => {
+            const cleaned = parseNumber(e.target.value);
+            setPricePerPerson(cleaned ? formatNumber(cleaned) : "");
+          }}
         />
       </div>
 
@@ -81,5 +91,5 @@ export function ZakatFitrah({ onResult }: ZakatFitrahProps) {
         Hitung Zakat Fitrah
       </Button>
     </Card>
-  )
+  );
 }

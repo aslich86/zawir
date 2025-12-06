@@ -9,29 +9,30 @@ import type { ZakatResultData } from "../zakat-calculator"
 
 interface ZakatGoldSilverProps {
   onResult: (result: ZakatResultData) => void
+  formatNumber: (value: string | number) => string
+  parseNumber: (value: string) => number
 }
 
-export function ZakatGoldSilver({ onResult }: ZakatGoldSilverProps) {
+export function ZakatGoldSilver({ onResult, formatNumber, parseNumber }: ZakatGoldSilverProps) {
   const [goldGrams, setGoldGrams] = useState("")
-  const [goldPrice, setGoldPrice] = useState("650000")
+  const [goldPrice, setGoldPrice] = useState(formatNumber("650000"))
+
   const [silverGrams, setSilverGrams] = useState("")
-  const [silverPrice, setSilverPrice] = useState("9500")
+  const [silverPrice, setSilverPrice] = useState(formatNumber("9500"))
 
   const handleCalculate = () => {
-    const gold = goldGrams ? Number.parseFloat(goldGrams) : 0
-    const silver = silverGrams ? Number.parseFloat(silverGrams) : 0
+    const gold = parseNumber(goldGrams) || 0
+    const silver = parseNumber(silverGrams) || 0
 
     if (gold <= 0 && silver <= 0) return
 
-    const goldPriceAmount = Number.parseFloat(goldPrice)
-    const silverPriceAmount = Number.parseFloat(silverPrice)
+    const goldPriceAmount = parseNumber(goldPrice)
+    const silverPriceAmount = parseNumber(silverPrice)
 
     const goldValue = gold * goldPriceAmount
     const silverValue = silver * silverPriceAmount
     const totalValue = goldValue + silverValue
 
-    // Nisab untuk emas = 85 gram
-    // Nisab untuk perak = 595 gram
     const goldNisab = 85 * goldPriceAmount
     const silverNisab = 595 * silverPriceAmount
 
@@ -55,70 +56,79 @@ export function ZakatGoldSilver({ onResult }: ZakatGoldSilverProps) {
 
   return (
     <Card className="p-6 bg-card border-border space-y-4">
+
+      {/* EMAS */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        
+        {/* Input gram emas */}
         <div>
-          <Label htmlFor="goldGrams" className="font-semibold">
-            Emas (Gram)
-          </Label>
+          <Label htmlFor="goldGrams" className="font-semibold">Emas (Gram)</Label>
           <p className="text-sm text-muted-foreground mb-2">Jumlah emas yang Anda miliki</p>
           <Input
             id="goldGrams"
-            type="number"
+            inputMode="decimal"
             placeholder="Contoh: 100"
             value={goldGrams}
-            onChange={(e) => setGoldGrams(e.target.value)}
-            min="0"
-            step="0.1"
+            onChange={(e) => {
+              const cleaned = e.target.value.replace(/,/g, "")
+              setGoldGrams(cleaned)
+            }}
           />
         </div>
 
+        {/* Input harga emas */}
         <div>
-          <Label htmlFor="goldPrice" className="font-semibold">
-            Harga Emas Per Gram (Rp)
-          </Label>
+          <Label htmlFor="goldPrice" className="font-semibold">Harga Emas Per Gram (Rp)</Label>
           <p className="text-sm text-muted-foreground mb-2">Harga pasaran emas hari ini</p>
           <Input
             id="goldPrice"
-            type="number"
-            placeholder="Contoh: 650000"
+            inputMode="numeric"
+            placeholder="Contoh: 650.000"
             value={goldPrice}
-            onChange={(e) => setGoldPrice(e.target.value)}
-            min="0"
+            onChange={(e) => {
+              const cleaned = e.target.value.replace(/,/g, "")
+              setGoldPrice(formatNumber(cleaned))
+            }}
           />
         </div>
+
       </div>
 
+      {/* PERAK */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        {/* Gram perak */}
         <div>
-          <Label htmlFor="silverGrams" className="font-semibold">
-            Perak (Gram)
-          </Label>
+          <Label htmlFor="silverGrams" className="font-semibold">Perak (Gram)</Label>
           <p className="text-sm text-muted-foreground mb-2">Jumlah perak yang Anda miliki</p>
           <Input
             id="silverGrams"
-            type="number"
+            inputMode="decimal"
             placeholder="Contoh: 500"
             value={silverGrams}
-            onChange={(e) => setSilverGrams(e.target.value)}
-            min="0"
-            step="0.1"
+            onChange={(e) => {
+              const cleaned = e.target.value.replace(/,/g, "")
+              setSilverGrams(cleaned)
+            }}
           />
         </div>
 
+        {/* Harga perak */}
         <div>
-          <Label htmlFor="silverPrice" className="font-semibold">
-            Harga Perak Per Gram (Rp)
-          </Label>
+          <Label htmlFor="silverPrice" className="font-semibold">Harga Perak Per Gram (Rp)</Label>
           <p className="text-sm text-muted-foreground mb-2">Harga pasaran perak hari ini</p>
           <Input
             id="silverPrice"
-            type="number"
-            placeholder="Contoh: 9500"
+            inputMode="numeric"
+            placeholder="Contoh: 9.500"
             value={silverPrice}
-            onChange={(e) => setSilverPrice(e.target.value)}
-            min="0"
+            onChange={(e) => {
+              const cleaned = e.target.value.replace(/,/g, "")
+              setSilverPrice(formatNumber(cleaned))
+            }}
           />
         </div>
+
       </div>
 
       <Button

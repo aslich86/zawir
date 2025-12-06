@@ -20,6 +20,23 @@ export interface ZakatResultData {
   details: Record<string, any>
 }
 
+/* ===========================================================
+   🔢 HELPER — FORMAT ANGKA RIBUAN OTOMATIS
+   =========================================================== */
+export function formatNumber(value: string | number): string {
+  if (value === "" || value === null || value === undefined) return ""
+
+  const num = typeof value === "number" ? value : Number(value.replace(/\./g, ""))
+  if (isNaN(num)) return ""
+
+  return num.toLocaleString("id-ID")
+}
+
+export function parseNumber(value: string): number {
+  if (!value) return 0
+  return Number(value.replace(/\./g, ""))
+}
+
 export function ZakatCalculator() {
   const [zakatType, setZakatType] = useState<ZakatType>("penghasilan")
   const [result, setResult] = useState<ZakatResultData | null>(null)
@@ -52,10 +69,22 @@ export function ZakatCalculator() {
 
       {/* Form Section */}
       <div>
-        {zakatType === "penghasilan" && <ZakatIncome onResult={setResult} />}
-        {zakatType === "maal" && <ZakatMaal onResult={setResult} />}
-        {zakatType === "emas" && <ZakatGoldSilver onResult={setResult} />}
-        {zakatType === "fitrah" && <ZakatFitrah onResult={setResult} />}
+        {zakatType === "penghasilan" && (
+          <ZakatIncome onResult={setResult} formatNumber={formatNumber} parseNumber={parseNumber} />
+        )}
+        {zakatType === "maal" && (
+          <ZakatMaal onResult={setResult} formatNumber={formatNumber} parseNumber={parseNumber} />
+        )}
+        {zakatType === "emas" && (
+          <ZakatGoldSilver onResult={setResult} formatNumber={formatNumber} parseNumber={parseNumber} />
+        )}
+{zakatType === "fitrah" && (
+  <ZakatFitrah
+    onResult={setResult}
+    formatNumber={formatNumber}
+    parseNumber={parseNumber}
+  />
+)}
       </div>
 
       {/* Result Section */}

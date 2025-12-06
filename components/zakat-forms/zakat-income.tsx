@@ -9,17 +9,20 @@ import type { ZakatResultData } from "../zakat-calculator"
 
 interface ZakatIncomeProps {
   onResult: (result: ZakatResultData) => void
+  formatNumber: (value: string | number) => string
+  parseNumber: (value: string) => number
 }
 
-export function ZakatIncome({ onResult }: ZakatIncomeProps) {
+export function ZakatIncome({ onResult, formatNumber, parseNumber }: ZakatIncomeProps) {
+
   const [income, setIncome] = useState("")
-  const [goldPrice, setGoldPrice] = useState("650000")
+  const [goldPrice, setGoldPrice] = useState(formatNumber("650000"))
 
   const handleCalculate = () => {
     if (!income || !goldPrice) return
 
-    const incomeAmount = Number.parseFloat(income)
-    const goldPriceAmount = Number.parseFloat(goldPrice)
+    const incomeAmount = parseNumber(income)
+    const goldPriceAmount = parseNumber(goldPrice)
 
     // Nisab zakat penghasilan = 85 gram emas
     const nisabAmount = 85 * goldPriceAmount
@@ -50,11 +53,13 @@ export function ZakatIncome({ onResult }: ZakatIncomeProps) {
         </p>
         <Input
           id="income"
-          type="number"
-          placeholder="Contoh: 120000000"
+          inputMode="numeric"
+          placeholder="Contoh: 120.000.000"
           value={income}
-          onChange={(e) => setIncome(e.target.value)}
-          min="0"
+          onChange={(e) => {
+            const cleaned = parseNumber(e.target.value)
+            setIncome(cleaned ? formatNumber(cleaned) : "")
+          }}
         />
       </div>
 
@@ -62,14 +67,18 @@ export function ZakatIncome({ onResult }: ZakatIncomeProps) {
         <Label htmlFor="goldPrice" className="font-semibold">
           Harga Emas Per Gram (Rp)
         </Label>
-        <p className="text-sm text-muted-foreground mb-2">Harga emas hari ini untuk menentukan nisab (85 gram)</p>
+        <p className="text-sm text-muted-foreground mb-2">
+          Harga emas hari ini untuk menentukan nisab (85 gram)
+        </p>
         <Input
           id="goldPrice"
-          type="number"
-          placeholder="Contoh: 650000"
+          inputMode="numeric"
+          placeholder="Contoh: 650.000"
           value={goldPrice}
-          onChange={(e) => setGoldPrice(e.target.value)}
-          min="0"
+          onChange={(e) => {
+            const cleaned = parseNumber(e.target.value)
+            setGoldPrice(cleaned ? formatNumber(cleaned) : "")
+          }}
         />
       </div>
 

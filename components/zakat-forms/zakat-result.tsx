@@ -34,7 +34,11 @@ export function ZakatResult({ result }: ZakatResultProps) {
     <div className="space-y-4">
       {/* Status Card */}
       <Card
-        className={`p-6 border-2 ${result.wajib ? "bg-green-50 border-green-200 dark:bg-green-950/20 dark:border-green-900" : "bg-blue-50 border-blue-200 dark:bg-blue-950/20 dark:border-blue-900"}`}
+        className={`p-6 border-2 ${
+          result.wajib
+            ? "bg-green-50 border-green-200 dark:bg-green-950/20 dark:border-green-900"
+            : "bg-blue-50 border-blue-200 dark:bg-blue-950/20 dark:border-blue-900"
+        }`}
       >
         <div className="flex items-start gap-3">
           {result.wajib ? (
@@ -64,13 +68,18 @@ export function ZakatResult({ result }: ZakatResultProps) {
           )}
           <div>
             <h3
-              className={`font-semibold text-lg ${result.wajib ? "text-green-900 dark:text-green-100" : "text-blue-900 dark:text-blue-100"}`}
+              className={`font-semibold text-lg ${
+                result.wajib ? "text-green-900 dark:text-green-100" : "text-blue-900 dark:text-blue-100"
+              }`}
             >
               {result.wajib ? "Anda Wajib Mengeluarkan Zakat" : "Anda Belum Mencapai Nisab"}
             </h3>
+
             {result.type !== "fitrah" && (
               <p
-                className={`text-sm mt-1 ${result.wajib ? "text-green-800 dark:text-green-200" : "text-blue-800 dark:text-blue-200"}`}
+                className={`text-sm mt-1 ${
+                  result.wajib ? "text-green-800 dark:text-green-200" : "text-blue-800 dark:text-blue-200"
+                }`}
               >
                 {result.wajib
                   ? `Harta Anda telah mencapai nisab sebesar ${formatCurrency(result.nisab)}`
@@ -86,7 +95,9 @@ export function ZakatResult({ result }: ZakatResultProps) {
         <div className="text-center">
           <h2 className="text-lg text-muted-foreground mb-4">{getTitle()}</h2>
           <div className="mb-6">
-            <div className="text-5xl font-bold text-primary mb-2">{formatCurrency(result.amount)}</div>
+            <div className="text-5xl font-bold text-primary mb-2">
+              {formatCurrency(result.amount)}
+            </div>
             <p className="text-muted-foreground">Total Zakat yang Harus Dikeluarkan</p>
           </div>
         </div>
@@ -94,76 +105,53 @@ export function ZakatResult({ result }: ZakatResultProps) {
         {/* Details */}
         <div className="mt-8 pt-8 border-t border-border">
           <h3 className="font-semibold text-foreground mb-4">Detail Perhitungan</h3>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
             {result.type === "penghasilan" && (
               <>
-                <div className="bg-background p-4 rounded-lg">
-                  <p className="text-sm text-muted-foreground">Penghasilan Tahunan</p>
-                  <p className="text-lg font-semibold text-foreground">{formatCurrency(result.details.income)}</p>
-                </div>
-                <div className="bg-background p-4 rounded-lg">
-                  <p className="text-sm text-muted-foreground">Nisab (85 gram emas)</p>
-                  <p className="text-lg font-semibold text-foreground">{formatCurrency(result.nisab)}</p>
-                </div>
-                <div className="bg-background p-4 rounded-lg md:col-span-2">
-                  <p className="text-sm text-muted-foreground">Tarif Zakat Penghasilan</p>
-                  <p className="text-lg font-semibold text-foreground">2.5% dari Total Penghasilan</p>
-                </div>
+                <Detail label="Penghasilan Tahunan" value={formatCurrency(result.details.income)} />
+                <Detail label="Nisab (85 gram emas)" value={formatCurrency(result.nisab)} />
+                <DetailWide label="Tarif Zakat Penghasilan" value="2.5% dari Total Penghasilan" />
               </>
             )}
 
             {result.type === "maal" && (
               <>
-                <div className="bg-background p-4 rounded-lg">
-                  <p className="text-sm text-muted-foreground">Total Harta</p>
-                  <p className="text-lg font-semibold text-foreground">{formatCurrency(result.details.wealth)}</p>
-                </div>
-                <div className="bg-background p-4 rounded-lg">
-                  <p className="text-sm text-muted-foreground">Nisab (85 gram emas)</p>
-                  <p className="text-lg font-semibold text-foreground">{formatCurrency(result.nisab)}</p>
-                </div>
-                <div className="bg-background p-4 rounded-lg md:col-span-2">
-                  <p className="text-sm text-muted-foreground">Tarif Zakat Maal</p>
-                  <p className="text-lg font-semibold text-foreground">2.5% dari Total Harta</p>
-                </div>
+                <Detail label="Total Harta" value={formatCurrency(result.details.wealth)} />
+                <Detail label="Nisab (85 gram emas)" value={formatCurrency(result.nisab)} />
+                <DetailWide label="Tarif Zakat Maal" value="2.5% dari Total Harta" />
               </>
             )}
 
             {result.type === "emas" && (
               <>
-                <div className="bg-background p-4 rounded-lg">
-                  <p className="text-sm text-muted-foreground">Total Emas</p>
-                  <p className="text-lg font-semibold text-foreground">
-                    {result.details.goldGrams.toFixed(2)} gram ({formatCurrency(result.details.goldValue)})
-                  </p>
-                </div>
-                <div className="bg-background p-4 rounded-lg">
-                  <p className="text-sm text-muted-foreground">Total Perak</p>
-                  <p className="text-lg font-semibold text-foreground">
-                    {result.details.silverGrams.toFixed(2)} gram ({formatCurrency(result.details.silverValue)})
-                  </p>
-                </div>
-                <div className="bg-background p-4 rounded-lg md:col-span-2">
-                  <p className="text-sm text-muted-foreground">Total Nilai</p>
-                  <p className="text-lg font-semibold text-foreground">{formatCurrency(result.details.totalValue)}</p>
-                </div>
+                <Detail
+                  label="Total Emas"
+                  value={`${result.details.goldGrams.toFixed(2)} gram (${formatCurrency(
+                    result.details.goldValue
+                  )})`}
+                />
+                <Detail
+                  label="Total Perak"
+                  value={`${result.details.silverGrams.toFixed(2)} gram (${formatCurrency(
+                    result.details.silverValue
+                  )})`}
+                />
+                <DetailWide
+                  label="Total Nilai"
+                  value={formatCurrency(result.details.totalValue)}
+                />
               </>
             )}
 
             {result.type === "fitrah" && (
               <>
-                <div className="bg-background p-4 rounded-lg">
-                  <p className="text-sm text-muted-foreground">Jumlah Orang</p>
-                  <p className="text-lg font-semibold text-foreground">{result.details.familyMembers} orang</p>
-                </div>
-                <div className="bg-background p-4 rounded-lg">
-                  <p className="text-sm text-muted-foreground">Harga Per Orang</p>
-                  <p className="text-lg font-semibold text-foreground">
-                    {formatCurrency(result.details.pricePerPerson)}
-                  </p>
-                </div>
+                <Detail label="Jumlah Orang" value={`${result.details.familyMembers} orang`} />
+                <Detail label="Harga Per Orang" value={formatCurrency(result.details.pricePerPerson)} />
               </>
             )}
+
           </div>
         </div>
 
@@ -175,6 +163,24 @@ export function ZakatResult({ result }: ZakatResultProps) {
           </p>
         </div>
       </Card>
+    </div>
+  )
+}
+
+function Detail({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="bg-background p-4 rounded-lg">
+      <p className="text-sm text-muted-foreground">{label}</p>
+      <p className="text-lg font-semibold text-foreground">{value}</p>
+    </div>
+  )
+}
+
+function DetailWide({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="bg-background p-4 rounded-lg md:col-span-2">
+      <p className="text-sm text-muted-foreground">{label}</p>
+      <p className="text-lg font-semibold text-foreground">{value}</p>
     </div>
   )
 }

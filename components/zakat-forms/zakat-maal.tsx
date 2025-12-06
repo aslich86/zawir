@@ -9,17 +9,19 @@ import type { ZakatResultData } from "../zakat-calculator"
 
 interface ZakatMaalProps {
   onResult: (result: ZakatResultData) => void
+  formatNumber: (value: string | number) => string
+  parseNumber: (value: string) => number
 }
 
-export function ZakatMaal({ onResult }: ZakatMaalProps) {
+export function ZakatMaal({ onResult, formatNumber, parseNumber }: ZakatMaalProps) {
   const [wealth, setWealth] = useState("")
-  const [goldPrice, setGoldPrice] = useState("650000")
+  const [goldPrice, setGoldPrice] = useState(formatNumber("650000"))
 
   const handleCalculate = () => {
-    if (!wealth || !goldPrice) return
+    const wealthAmount = parseNumber(wealth)
+    const goldPriceAmount = parseNumber(goldPrice)
 
-    const wealthAmount = Number.parseFloat(wealth)
-    const goldPriceAmount = Number.parseFloat(goldPrice)
+    if (wealthAmount <= 0 || goldPriceAmount <= 0) return
 
     // Nisab zakat maal = 85 gram emas
     const nisabAmount = 85 * goldPriceAmount
@@ -41,6 +43,8 @@ export function ZakatMaal({ onResult }: ZakatMaalProps) {
 
   return (
     <Card className="p-6 bg-card border-border space-y-4">
+
+      {/* TOTAL HARTA */}
       <div>
         <Label htmlFor="wealth" className="font-semibold">
           Total Harta (Rp)
@@ -50,36 +54,41 @@ export function ZakatMaal({ onResult }: ZakatMaalProps) {
         </p>
         <Input
           id="wealth"
-          type="number"
-          placeholder="Contoh: 100000000"
+          inputMode="numeric"
+          placeholder="Contoh: 100.000.000"
           value={wealth}
-          onChange={(e) => setWealth(e.target.value)}
-          min="0"
+          onChange={(e) => {
+            const cleaned = e.target.value.replace(/\D/g, "")
+            setWealth(formatNumber(cleaned))
+          }}
         />
       </div>
 
+      {/* HARGA EMAS */}
       <div>
         <Label htmlFor="goldPrice" className="font-semibold">
           Harga Emas Per Gram (Rp)
         </Label>
-        <p className="text-sm text-muted-foreground mb-2">Harga emas hari ini untuk menentukan nisab (85 gram)</p>
+        <p className="text-sm text-muted-foreground mb-2">
+          Harga emas hari ini untuk menentukan nisab (85 gram)
+        </p>
         <Input
           id="goldPrice"
-          type="number"
-          placeholder="Contoh: 650000"
+          inputMode="numeric"
+          placeholder="Contoh: 650.000"
           value={goldPrice}
-          onChange={(e) => setGoldPrice(e.target.value)}
-          min="0"
+          onChange={(e) => {
+            const cleaned = e.target.value.replace(/\D/g, "")
+            setGoldPrice(formatNumber(cleaned))
+          }}
         />
       </div>
 
-      <Button
-        onClick={handleCalculate}
-        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
-        disabled={!wealth || !goldPrice}
-      >
-        Hitung Zakat Maal
+      {/* TOMBOL */}
+      <Button className="w-full" onClick={handleCalculate}>
+        Hitung Zakat
       </Button>
+
     </Card>
   )
 }
